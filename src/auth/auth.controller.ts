@@ -4,6 +4,7 @@ import { SignInDto } from "./dto/sign-in.dto";
 import { AuthService } from "./auth.service";
 import { JwtAuthGuard } from "./jwt-auth.guard";
 import { UserService } from "src/user/user.service";
+import { comparePassword } from "src/utils/bcrypt";
 
 @ApiBearerAuth('Authorization')
 @ApiTags('认证')
@@ -19,14 +20,12 @@ export class AuthController {
     @ApiBody({ type: SignInDto })
     async signIn(@Body() signInDto: SignInDto) {
         const user = await this.authService.validateUser(signInDto);
-        if(!user) {
-            throw new UnauthorizedException('用户不存在');
-        }
 
         return this.authService.login(user);
     }
 
     @Get('profile')
+    @ApiOperation({ summary: '获取个人信息' })
     @UseGuards(JwtAuthGuard)
     async getProfile(@Request() req) {
         const user = await this.userService.findOne(req.user.username);

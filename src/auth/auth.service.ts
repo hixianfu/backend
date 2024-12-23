@@ -15,13 +15,21 @@ export class AuthService {
 
     async validateUser(signInDto: SignInDto) {
         const user = await this.userService.findOne(signInDto.username);
+
+        if(!user) {
+            throw new UnauthorizedException('用户不存在');
+        }
         
-        if(user && comparePassword(signInDto.password, user.password)) {
+        if(!comparePassword(signInDto.password, user.password)) {
+            throw new UnauthorizedException('密码错误');
+        }
+
+        if(comparePassword(signInDto.password, user.password)) {
             const { password, ...result } = user;
             return result;
         }
 
-        return null;
+        return null
     }
 
     generateAccessToken(user: User) {
