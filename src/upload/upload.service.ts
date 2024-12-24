@@ -58,10 +58,11 @@ export class UploadService {
    */
   async uploadAvatar(userId: number, file: Express.Multer.File) {
     const user = await this.userService.findById(userId);
-    console.log(user, 'user', userId);
+    
     if (!user) {
       throw new HttpException('用户不存在', HttpStatus.BAD_REQUEST);
     }
+    
     const { url } = await this.create(file);
 
     if (!url) {

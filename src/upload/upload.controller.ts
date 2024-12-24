@@ -1,4 +1,4 @@
-import { Controller, Post, UseInterceptors, UploadedFile, Param, UseGuards } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, UploadedFile, Param, UseGuards, BadRequestException } from '@nestjs/common';
 import { UploadService } from './upload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiOperation, ApiParam, ApiProperty } from '@nestjs/swagger';
@@ -26,7 +26,13 @@ export class UploadController {
   }
 
   @Post('uploadAvatar/:id')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', {
+    fileFilter: (_req, file, cb) => {
+      const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      const isValid = allowedMimeTypes.includes(file.mimetype);
+      cb(new BadRequestException('只支持jpg、jpeg、png格式的图片'), isValid);
+    }
+  }))
   @ApiParam({ name: 'id', description: '用户ID', required: true })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
