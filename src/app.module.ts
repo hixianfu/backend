@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UploadModule } from './upload/upload.module';
 import { VocabularyModule } from './vocabulary/vocabulary.module';
+import { WordModule } from './word/word.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { VocabularyModule } from './vocabulary/vocabulary.module';
       synchronize: true,
     }),
     UploadModule,
-    VocabularyModule
+    VocabularyModule,
+    WordModule
   ],
   controllers: [],
   providers: [],
