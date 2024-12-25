@@ -24,11 +24,17 @@ export class AuthController {
         return this.authService.login(user);
     }
 
+    @Post('refresh')
+    @ApiOperation({ summary: '刷新令牌' })
+    async refresh(@Request() req: Request) {
+        return this.authService.refreshToken(req.headers['authorization'].split(' ')[1]);
+    }
+
     @Get('profile')
     @ApiOperation({ summary: '获取个人信息' })
     @UseGuards(JwtAuthGuard)
-    async getProfile(@Request() req) {
-        const user = await this.userService.findOne(req.user.username);
+    async getProfile(@Request() req: Request) {
+        const user = await this.authService.profile(req.headers['authorization'].split(' ')[1]);
         return user;
     }
 }

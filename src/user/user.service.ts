@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -21,8 +21,14 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  findOne(username: string): Promise<User> {
-    return this.userRepository.findOne({ where: { username } });
+  async findOne(username: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { username } });
+
+    if (!user) {
+      throw new NotFoundException('用户不存在');
+    }
+
+    return user;
   }
 
   findById(id: number): Promise<User> {

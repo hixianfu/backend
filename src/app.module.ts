@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UploadModule } from './upload/upload.module';
 import { VocabularyModule } from './vocabulary/vocabulary.module';
 import { WordModule } from './word/word.module';
+import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
   imports: [
@@ -14,6 +15,10 @@ import { WordModule } from './word/word.module';
     ConfigModule.forRoot({
       envFilePath: ['.env'],
       isGlobal: true,
+    }),
+    RedisModule.forRoot({
+      type: 'single',
+      url: process.env.REDIS_URL,
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -31,5 +36,6 @@ import { WordModule } from './word/word.module';
   ],
   controllers: [],
   providers: [],
+  exports: [RedisModule],
 })
 export class AppModule { }
