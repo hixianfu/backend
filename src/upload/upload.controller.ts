@@ -30,7 +30,11 @@ export class UploadController {
     fileFilter: (_req, file, cb) => {
       const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg'];
       const isValid = allowedMimeTypes.includes(file.mimetype);
-      cb(new BadRequestException('只支持jpg、jpeg、png格式的图片'), isValid);
+      // 如果文件格式不支持，则抛出错误
+      if (!isValid) {
+        cb(new BadRequestException('只支持jpg、jpeg、png格式的图片'), isValid);
+      }
+      cb(null, isValid);
     }
   }))
   @ApiParam({ name: 'id', description: '用户ID', required: true })
