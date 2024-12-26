@@ -14,10 +14,10 @@ export class WordController {
     return this.wordService.create(createWordDto);
   }
 
-  @Get('cet4/daily')
+  @Get('cet4/daily/:userId')
   @ApiOperation({ summary: '获取每日单词' })
-  findDaily() {
-    return this.wordService.findDaily();
+  findDaily(@Param('userId') userId: number) {
+    return this.wordService.findDaily(userId);
   }
 
   @Get('cet4/:word')

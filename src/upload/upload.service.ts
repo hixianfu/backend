@@ -38,6 +38,7 @@ export class UploadService {
         url: 'https://' + res.Location
       };
     } catch (error) {
+      console.log(error, 'error');
       await this.remove(params.Key);
       throw new HttpException('文件上传失败', HttpStatus.BAD_REQUEST);
     }
