@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { WordService } from './word.service';
 import { CreateWordDto } from './dto/create-word.dto';
 import { UpdateWordDto } from './dto/update-word.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @Controller('word')
 @ApiTags('CET4单词')
@@ -14,9 +14,10 @@ export class WordController {
     return this.wordService.create(createWordDto);
   }
 
-  @Get('cet4/daily/:userId')
+  @Get('cet4/daily')
   @ApiOperation({ summary: '获取每日单词' })
-  findDaily(@Param('userId') userId: number) {
+  @ApiQuery({ name: 'id', type: Number, required: true, description: '用户id' })
+  findDaily(@Query('id') userId: number) {
     return this.wordService.findDaily(userId);
   }
 

@@ -1,6 +1,4 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Min } from "class-validator";
-import { Max } from "class-validator";
 import { User } from "src/user/entities/user.entity";
 import { Word } from "src/word/entities/word.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
@@ -31,12 +29,6 @@ export class Progress {
     @Column({ type: 'enum', enum: ProgressStatus })
     @ApiProperty({ description: '进度状态' })
     status: ProgressStatus;
-
-    @Column()
-    @Min(1)
-    @Max(3)
-    @ApiProperty({ description: '熟悉程度' })
-    familiarLevel: number;
 
     @Column()
     @ApiProperty({ description: '下次复习时间' })
