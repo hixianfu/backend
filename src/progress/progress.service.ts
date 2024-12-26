@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProgressDto } from './dto/create-progress.dto';
 import { UpdateProgressDto } from './dto/update-progress.dto';
 import { Repository } from 'typeorm';
@@ -28,14 +28,17 @@ export class ProgressService {
   }
 
   async update(updateProgressDto: UpdateProgressDto) {
-    const progress = await this.progressRepository.findOne({ where: { userId: updateProgressDto.userId, wordId: updateProgressDto.wordId } });
+    const progress = await this.progressRepository.createQueryBuilder('user_word_progress')
+      .select()
+      .where('user_word_progress.userId = :userId and user_word_progress.wordId = :wordId', { userId: updateProgressDto.userId, wordId: updateProgressDto.wordId })
+      .getOne();
+    console.log(progress, 'progress');
     if (!progress) {
-      throw new Error('Progress not found');
+      throw new NotFoundException('Progress not found');
     }
 
     const { status } = updateProgressDto;
     progress.status = status;
-    progress.updatedAt = dayjsNow();
 
     if (status === ProgressStatus.LEARNED) {
       progress.nextReviewTime = null;

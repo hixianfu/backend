@@ -30,7 +30,7 @@ export class Progress {
     @ApiProperty({ description: '进度状态' })
     status: ProgressStatus;
 
-    @Column()
+    @Column({ type: 'timestamp', default: null })
     @ApiProperty({ description: '下次复习时间' })
     nextReviewTime: Date;
 
@@ -38,7 +38,7 @@ export class Progress {
     @ApiProperty({ description: '创建时间' })
     createdAt: Date;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    @Column({ type: 'timestamp', default: null, onUpdate: 'CURRENT_TIMESTAMP' })
     @ApiProperty({ description: '更新时间' })
     updatedAt: Date;
 }
