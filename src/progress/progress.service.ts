@@ -4,7 +4,7 @@ import { UpdateProgressDto } from './dto/update-progress.dto';
 import { Repository } from 'typeorm';
 import { Progress, ProgressStatus } from './entities/progress.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { dayjsNow, nowAfterThreeDays } from 'src/utils/userDayJS';
+import { nowAfterThreeDays } from 'src/utils/userDayJS';
 
 @Injectable()
 export class ProgressService {
@@ -32,7 +32,6 @@ export class ProgressService {
       .select()
       .where('user_word_progress.userId = :userId and user_word_progress.wordId = :wordId', { userId: updateProgressDto.userId, wordId: updateProgressDto.wordId })
       .getOne();
-    console.log(progress, 'progress');
     if (!progress) {
       throw new NotFoundException('Progress not found');
     }

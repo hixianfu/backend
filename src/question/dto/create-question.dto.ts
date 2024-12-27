@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { QuestionType } from "../entities/question.entity";
+import { IsNotEmpty } from "class-validator";
 
 export class CreateQuestionDto {
 
@@ -15,6 +16,7 @@ export class CreateQuestionDto {
     @ApiProperty({ description: '正确答案' })
     correct_answer: string;
 
+    @IsNotEmpty()
     @ApiProperty({ description: '课程ID' })
     courseId: number;
 }

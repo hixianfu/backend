@@ -35,7 +35,7 @@ export class Question {
     @ManyToOne(() => Course, course => course.id)
     @JoinColumn({ name: 'courseId' })
     @ApiProperty({ description: '课程ID' })
-    course: number
+    courseId: number
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     @ApiProperty({ description: '创建时间' })
