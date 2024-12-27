@@ -9,6 +9,7 @@ import { WordModule } from './word/word.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { ProgressModule } from './progress/progress.module';
 import { QuestionModule } from './question/question.module';
+import { CourseModule } from './course/course.module';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { QuestionModule } from './question/question.module';
     VocabularyModule,
     WordModule,
     ProgressModule,
-    QuestionModule
+    QuestionModule,
+    CourseModule
   ],
   controllers: [],
   providers: [],

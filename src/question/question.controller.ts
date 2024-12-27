@@ -18,11 +18,13 @@ export class QuestionController {
   @Get('daily')
   @ApiOperation({ summary: '获取日常题目' })
   @ApiQuery({ name: 'count', type: Number, required: false, description: '题目数量', default: 10 })
-  @ApiQuery({ name: 'type', type: String, required: false, description: '题目类型', default: QuestionType.DAILY })  
+  @ApiQuery({ name: 'type', type: String, required: false, description: '题目类型', default: QuestionType.DAILY })
+  @ApiQuery({ name: 'courseId', type: Number, required: false, description: '课程id' })
   findDailyQuiz(
     @Query('count') count: number = 10,
-    @Query('type') type: QuestionType = QuestionType.DAILY
+    @Query('type') type: QuestionType = QuestionType.DAILY,
+    @Query('courseId') courseId: number
   ) {
-    return this.questionService.findDailyQuiz(count, type);
+    return this.questionService.findDailyQuiz(count, type, courseId);
   }
 }

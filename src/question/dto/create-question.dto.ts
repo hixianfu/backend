@@ -13,5 +13,8 @@ export class CreateQuestionDto {
     options: string[];
 
     @ApiProperty({ description: '正确答案' })
-    correct_answer: string;     
+    correct_answer: string;
+
+    @ApiProperty({ description: '课程ID' })
+    courseId: number;
 }
