@@ -8,6 +8,7 @@ import { VocabularyModule } from './vocabulary/vocabulary.module';
 import { WordModule } from './word/word.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { ProgressModule } from './progress/progress.module';
+import { QuestionModule } from './question/question.module';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { ProgressModule } from './progress/progress.module';
     UploadModule,
     VocabularyModule,
     WordModule,
-    ProgressModule
+    ProgressModule,
+    QuestionModule
   ],
   controllers: [],
   providers: [],
