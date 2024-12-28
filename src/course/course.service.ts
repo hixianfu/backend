@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Course } from './entities/course.entity';
+import { Course, CourseLevel } from './entities/course.entity';
 
 @Injectable()
 export class CourseService {
@@ -11,7 +11,11 @@ export class CourseService {
     private readonly courseRepository: Repository<Course>
   ){}
 
-  findAll() {
-    return this.courseRepository.find()
+  findAll(level: CourseLevel) {
+    return this.courseRepository.find({
+      where: {
+        level: level
+      }
+    })
   }
 }
