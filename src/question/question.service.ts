@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Question, QuestionType } from './entities/question.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class QuestionService {
   constructor(
     @InjectRepository(Question)
     private readonly questionRepository: Repository<Question>
-  ){}
+  ) { }
 
   create(createQuestionDto: CreateQuestionDto) {
     return this.questionRepository.save(createQuestionDto);
@@ -28,5 +28,17 @@ export class QuestionService {
       .orderBy('RAND()')
       .limit(count)
       .getMany();
+  }
+
+  async findWrongQuiz(userId: number, courseId: number) {
+    return await this.questionRepository
+      .createQueryBuilder('q')
+      .select(['q.*', 'u.userAnswer as userAnswer'])
+      .innerJoin('quiz_user_answer', 'u', 'q.id = u.questionId')
+      .where('q.courseId = :courseId', { courseId })
+      .andWhere('u.userId = :userId', { userId })
+      .andWhere('u.courseId = :courseId', { courseId })
+      .andWhere('u.isCorrect = :isCorrect', { isCorrect: 0 })
+      .getRawMany();
   }
 }
