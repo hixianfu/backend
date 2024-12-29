@@ -5,7 +5,7 @@ import { Word } from './entities/word.entity';
 import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProgressService } from 'src/progress/progress.service';
-import { ProgressStatus } from 'src/progress/entities/progress.entity';
+import { Progress, ProgressStatus } from 'src/progress/entities/progress.entity';
 import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Redis } from 'ioredis';
 import { nowAfterThreeDays } from 'src/utils/userDayJS';
@@ -61,15 +61,22 @@ export class WordService {
           userId: userId,
           wordId: word.id,
           status: ProgressStatus.FORGOT,
-          nextReviewTime:nowAfterThreeDays()
+          nextReviewTime: nowAfterThreeDays()
         });
       });
     } else {
-      const wordIds = todayReviewWords.map(word => word.wordId);
-      words = await this.findBatch(wordIds);
+      words = await this.findBatch(todayReviewWords);
+
+      if (words.length < 20) {
+        const newWords = await this.wordRepository.createQueryBuilder('word')
+          .select()
+          .orderBy('RAND()')
+          .limit(20 - words.length)
+          .getMany();
+        words = [...words, ...newWords];
+      }
     }
 
-    // 计算现在到明天早上八点相差多少毫米
     const now = new Date(); // 获取当前时间
     const tomorrow = new Date(now);
     tomorrow.setHours(8, 0, 0, 0); // 设置明天的 8 点钟
@@ -87,8 +94,11 @@ export class WordService {
     return words;
   }
 
-  async findBatch(wordIds: number[]) {
-    return this.wordRepository.find({ where: { id: In(wordIds) } });
+  async findBatch(progress: Progress[]) {
+    return this.wordRepository.createQueryBuilder('word')
+      .select()
+      .where('word.id IN (:...ids)', { ids: progress.map((p: any) => (p.wordId as Word).id) })
+      .getMany();
   }
 
   findOne(word: string): Promise<Word> {
