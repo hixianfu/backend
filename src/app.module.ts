@@ -9,8 +9,10 @@ import { WordModule } from './word/word.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { ProgressModule } from './progress/progress.module';
 import { QuestionModule } from './question/question.module';
-import { CourseModule } from './course/course.module';
 import { AnswerModule } from './answer/answer.module';
+import { LevelModule } from './level/level.module';
+import { BookModule } from './book/book.module';
+import { BookProgressModule } from './book-progress/book-progress.module';
 
 @Module({
   imports: [
@@ -39,8 +41,10 @@ import { AnswerModule } from './answer/answer.module';
     WordModule,
     ProgressModule,
     QuestionModule,
-    CourseModule,
-    AnswerModule
+    AnswerModule,
+    LevelModule,
+    BookModule,
+    BookProgressModule
   ],
   controllers: [],
   providers: [],

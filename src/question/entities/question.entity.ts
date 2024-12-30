@@ -1,6 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Course } from "src/course/entities/course.entity";
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 export enum QuestionType {
     DAILY = 'daily',         // 日常
@@ -31,11 +30,6 @@ export class Question {
     @Column()
     @ApiProperty({ description: '正确答案' })
     correct_answer: string;
-
-    @ManyToOne(() => Course, course => course.id)
-    @JoinColumn({ name: 'courseId' })
-    @ApiProperty({ description: '课程ID' })
-    courseId: number
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     @ApiProperty({ description: '创建时间' })
