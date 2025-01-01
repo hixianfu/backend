@@ -9,5 +9,6 @@ import { ProgressModule } from 'src/progress/progress.module';
   imports: [TypeOrmModule.forFeature([Word]), ProgressModule],
   controllers: [WordController],
   providers: [WordService],
+  exports: [WordService],
 })
 export class WordModule {}

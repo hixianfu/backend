@@ -1,7 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { User } from "src/user/entities/user.entity";
-import { Word } from "src/word/entities/word.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 export enum ProgressStatus {
     FORGOT = 0, // 忘记
@@ -16,14 +14,12 @@ export class Progress {
     @ApiProperty({ description: '进度ID' })
     id: number;
 
-    @ManyToOne(() => User, user => user.id)
-    @JoinColumn({ name: 'userId' })
+    @Column({ type: 'int', comment: '用户ID' })
     @ApiProperty({ description: '用户ID' })
     userId: number;
 
-    @ManyToOne(() => Word, word => word.id)
-    @JoinColumn({ name: 'wordId' })
-    @ApiProperty({ description: '单词ID' })
+    @Column({ type: 'int', comment: '单词ID' })
+    @ApiProperty({ description: '单词ID11' })
     wordId: number;
 
     @Column({ type: 'enum', enum: ProgressStatus })

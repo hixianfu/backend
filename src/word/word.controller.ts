@@ -21,6 +21,12 @@ export class WordController {
     return this.wordService.findDaily(userId);
   }
 
+  @Get('cet4/all')
+  @ApiOperation({ summary: '获取所有CET4单词' })
+  findAllCet4(@Query('id') userId: number) {
+    return this.wordService.findAllCet4(userId);
+  }
+
   @Get('cet4/:word')
   @ApiOperation({ summary: '搜索单词' })
   findOne(@Param('word') word: string) {

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateWordDto } from './dto/create-word.dto';
 import { UpdateWordDto } from './dto/update-word.dto';
 import { Word } from './entities/word.entity';
-import { In, Repository } from 'typeorm';
+import { In, IsNull, Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProgressService } from 'src/progress/progress.service';
 import { Progress, ProgressStatus } from 'src/progress/entities/progress.entity';
@@ -25,6 +25,15 @@ export class WordService {
 
   create(createWordDto: CreateWordDto) {
     return 'This action adds a new word';
+  }
+
+  async findAllCet4(userId: number) {
+    const sql = `select w.id, w.cet4_word, w.cet4_translate, COALESCE(up.status, -1) as status, UPPER(LEFT(w.cet4_word, 1)) as letter
+    from wine_cet4_word w
+    left JOIN user_word_progress up on w.id = up.wordId and up.userId = ${userId}
+    ORDER BY letter, w.id`;
+    const words = await this.wordRepository.query(sql);
+    return words;
   }
 
   /**
