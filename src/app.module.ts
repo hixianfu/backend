@@ -13,6 +13,7 @@ import { AnswerModule } from './answer/answer.module';
 import { LevelModule } from './level/level.module';
 import { BookModule } from './book/book.module';
 import { BookProgressModule } from './book-progress/book-progress.module';
+import { ActivityModule } from './activity/activity.module';
 
 @Module({
   imports: [
@@ -44,7 +45,8 @@ import { BookProgressModule } from './book-progress/book-progress.module';
     AnswerModule,
     LevelModule,
     BookModule,
-    BookProgressModule
+    BookProgressModule,
+    ActivityModule
   ],
   controllers: [],
   providers: [],

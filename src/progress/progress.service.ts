@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { Progress, ProgressStatus } from './entities/progress.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { nowAfterThreeDays } from 'src/utils/userDayJS';
+import { ActivityService } from 'src/activity/activity.service';
+import { ActivityType } from 'src/activity/entities/activity.entity';
 
 @Injectable()
 export class ProgressService {
@@ -12,6 +14,7 @@ export class ProgressService {
   constructor(
     @InjectRepository(Progress)
     private progressRepository: Repository<Progress>,
+    private activityService: ActivityService, 
   ) { }
 
   /**
@@ -61,7 +64,12 @@ export class ProgressService {
     return this.progressRepository.save(progress);
   }
 
-  async findCet4Progress(userId: number): Promise<{ learned: number, familiar: number, forgotten: number, total: number }> {
+  /**
+   * 获取用户学习情况
+   * @param userId 用户ID
+   * @returns 
+   */
+  async findCet4Progress(userId: number) {
     const sql = `
       SELECT status
       FROM user_word_progress
@@ -76,10 +84,25 @@ export class ProgressService {
     const progress: { status: ProgressStatus }[] = await this.progressRepository.query(sql);
     const count: { count: number }[] = await this.progressRepository.query(count_sql);
 
+    let word_count = 0;
+    let time_count = 0;
+
+    const activity = await this.activityService.findTodayAllByUserId(userId);
+    activity.map(a => {
+      if(a.activityType === ActivityType.WORD) {
+        word_count += a.activityValue;
+      }
+      if(a.activityType === ActivityType.TIME) {
+        time_count += a.activityValue;
+      }
+    })
+
     return {
       learned: progress.filter(p => p.status == ProgressStatus.LEARNED).length,
       familiar: progress.filter(p => p.status == ProgressStatus.FAMILIAR).length,
       forgotten: progress.filter(p => p.status == ProgressStatus.FORGOT).length,
+      word: word_count,
+      time: time_count > 0 ? (time_count / 60).toFixed(2) : 0,
       total: count[0].count,
     };
   }
