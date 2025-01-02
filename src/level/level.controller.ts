@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { LevelService } from './level.service';
 import { CreateLevelDto } from './dto/create-level.dto';
 import { UpdateLevelDto } from './dto/update-level.dto';
@@ -7,7 +7,7 @@ import { ApiOperation, ApiTags, ApiBody } from '@nestjs/swagger';
 @Controller('level')
 @ApiTags('关卡')
 export class LevelController {
-  constructor(private readonly levelService: LevelService) {}
+  constructor(private readonly levelService: LevelService) { }
 
   @Post()
   @ApiOperation({ summary: '创建关卡' })
@@ -22,10 +22,22 @@ export class LevelController {
     return this.levelService.findAll();
   }
 
-  @Get('book/:bookId')
+  @Get('detail')
+  @ApiOperation({ summary: '根据关卡id获取关卡' })
+  findLevelById(
+    @Query('levelId') levelId: number
+  ) {
+    return this.levelService.findLevelById(levelId);
+  }
+
+
+  @Get('book/user')
   @ApiOperation({ summary: '获取题本所有关卡' })
-  findByBookId(@Param('bookId') bookId: string) {
-    return this.levelService.findByBookId(+bookId);
+  findByBookId(
+    @Query('bookId') bookId: number,
+    @Query('userId') userId: number,
+  ) {
+    return this.levelService.findByBookId(bookId, userId);
   }
 
   @Patch(':id')

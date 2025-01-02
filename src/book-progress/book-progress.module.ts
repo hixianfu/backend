@@ -8,5 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [TypeOrmModule.forFeature([BookProgress])],  
   controllers: [BookProgressController],
   providers: [BookProgressService],
+  exports: [BookProgressService],
 })
 export class BookProgressModule {}

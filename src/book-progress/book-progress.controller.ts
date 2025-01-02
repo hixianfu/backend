@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { BookProgressService } from './book-progress.service';
 import { CreateBookProgressDto } from './dto/create-book-progress.dto';
 import { UpdateBookProgressDto } from './dto/update-book-progress.dto';
@@ -13,6 +13,15 @@ export class BookProgressController {
   @ApiOperation({ summary: '创建用户进度' })
   create(@Body() createBookProgressDto: CreateBookProgressDto) {
     return this.bookProgressService.create(createBookProgressDto);
+  }
+
+  @Get('book/user')
+  @ApiOperation({ summary: '获取用户题本进度' })
+  findAllByBookIdAndUserId(
+    @Query('bookId') bookId: number,
+    @Query('userId') userId: number,
+  ) {
+    return this.bookProgressService.findAllByBookIdAndUserId(bookId, userId);
   }
 
   @Get()

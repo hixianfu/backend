@@ -16,6 +16,16 @@ export class BookProgressService {
     return this.bookProgressRepository.save(createBookProgressDto);
   }
 
+  /**
+   * 获取用户题本进度
+   * @param bookId 题本id
+   * @param userId 用户id
+   * @returns 用户题本进度
+   */
+  findAllByBookIdAndUserId(bookId: number, userId: number) {
+    return this.bookProgressRepository.find({ where: { bookId, userId } });
+  }
+
   findAll() {
     return this.bookProgressRepository.find();
   }

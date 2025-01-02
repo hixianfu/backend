@@ -30,6 +30,12 @@ export class QuestionService {
       .getMany();
   }
 
+  /**
+   * 获取错题
+   * @param userId 用户id
+   * @param courseId 课程id
+   * @returns 错题列表
+   */
   async findWrongQuiz(userId: number, courseId: number) {
     return await this.questionRepository
       .createQueryBuilder('q')
@@ -40,5 +46,14 @@ export class QuestionService {
       .andWhere('u.courseId = :courseId', { courseId })
       .andWhere('u.isCorrect = :isCorrect', { isCorrect: 0 })
       .getRawMany();
+  }
+
+  /**
+   * 获取关卡题目
+   * @param levelId 关卡id
+   * @returns 关卡题目列表
+   */
+  async findLevelQuiz(levelId: number) {
+    return await this.questionRepository.find({ where: { levelId } });
   }
 }

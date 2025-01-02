@@ -28,6 +28,15 @@ export class QuestionController {
     return this.questionService.findDailyQuiz(count, type, courseId);
   }
 
+  @Get('level')
+  @ApiOperation({ summary: '获取关卡题目' })
+  @ApiQuery({ name: 'levelId', type: Number, required: true, description: '关卡id' })
+  findLevelQuiz(
+    @Query('levelId') levelId: number
+  ) {
+    return this.questionService.findLevelQuiz(levelId);
+  }
+
   @Get('wrong')
   @ApiOperation({ summary: '获取用户错题' })
   @ApiQuery({ name: 'userId', type: Number, required: true, description: '用户id' })

@@ -14,6 +14,10 @@ export class Level {
     @ApiProperty({ description: '关卡编号' })
     levelNumber: number
 
+    @Column({ type: 'tinyint', comment: '解锁条件,前一关卡的levelNumber' })
+    @ApiProperty({ description: '解锁条件' })
+    unlockCondition: number
+
     @Column({ type: 'varchar', comment: '关卡名称' })
     @ApiProperty({ description: '关卡名称' })
     name: string
