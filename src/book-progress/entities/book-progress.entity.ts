@@ -20,7 +20,7 @@ export class BookProgress {
     @Column({ type: 'tinyint', default: 0, comment: '是否完成 0: 未完成 1: 已完成' })
     completed: number;
 
-    @Column({ type: 'int', default: 0, comment: '完成时间' })
+    @Column({ type: 'timestamp', default: 0, comment: '完成时间' })
     completedAt: Date;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
