@@ -21,7 +21,7 @@ export class BookProgress {
     completed: number;
 
     @Column({ type: 'int', default: 0, comment: '完成时间' })
-    completedAt: number;
+    completedAt: Date;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;

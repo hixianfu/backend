@@ -53,6 +53,14 @@ export class Question {
     @ApiProperty({ description: '该题的分数' })
     points: number
 
+    @Column({ type: 'text', comment: '题目解析', nullable: true })
+    @ApiProperty({ description: '题目解析' })
+    explain: string;
+
+    @Column({ type: 'text', comment: '备注', nullable: true })
+    @ApiProperty({ description: '备注' })
+    notes: string;
+
     @Column({ type: 'int', comment: '修改人id', nullable: true })
     @ApiProperty({ description: '修改人id' })
     modified_by: number;
